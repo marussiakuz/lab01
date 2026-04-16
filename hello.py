@@ -1,41 +1,17 @@
-import os
-import subprocess
-import pickle
+import typer
 
-def unsafe_greeting(name):
-    result = eval(f"f'Hello appsec world from @{name}!'")
-    return result
-
-def vulnerable_shell(cmd):
-    subprocess.call(cmd, shell=True)
-
-def load_unsafe_pickle(data):
-    return pickle.loads(data)
-
-PASSWORD = "admin123"
-API_KEY = "sk-1234567890abcdef"
-
-os.system("echo 'Starting Hello AppSec World application...'")
-
-DEBUG = True
-SECRET_FLAG = "flag{never_hardcode_secrets}"
-
-def main():
-    print("=" * 45)
-    print("Hello AppSec World — Dirty Code Edition")
-    print("=" * 45)
-    
-    name = input("Enter your name: ")
-
-    try:
-        greeting = unsafe_greeting(name)
-        print(f"\n{greeting}")
-    except Exception as e:
-        print(f"Error: {e}")
-        print(f"\nHello appsec world from @{name}!")
-    
-    print(f"\n[WARNING] Hardcoded credentials found: {PASSWORD}, {API_KEY}")
-    print(f"[DEBUG MODE] Secret flag: {SECRET_FLAG}")
+def main(
+    name: str,
+    lastname: str = typer.Option("", help="Фамилия пользователя."),
+    formal: bool = typer.Option(False, "--formal", "-f", help="Использовать формальное приветствие."),
+):
+    """
+    Говорит "Привет" пользователю, опционально используя фамилию и формальный стиль.
+    """
+    if formal:
+        print(f"Добрый день, {name} {lastname}!")
+    else:
+        print(f"Привет, {name}!")
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)
