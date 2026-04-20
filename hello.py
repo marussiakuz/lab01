@@ -1,7 +1,7 @@
 import typer
 
 def main(
-    name: str,  # Required argument - user's first name
+    name: str,  # Required argument
     lastname: str = typer.Option("", help="User's last name."),  # Optional last name
     formal: bool = typer.Option(False, "--formal", "-f", help="Use formal greeting."),  # Flag for formal greeting style
 ):
