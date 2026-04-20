@@ -1,41 +1,30 @@
-import os
-import subprocess
-import pickle
+import typer
 
-def unsafe_greeting(name):
-    result = eval(f"f'Hello appsec world from @{name}!'")
-    return result
-
-def vulnerable_shell(cmd):
-    subprocess.call(cmd, shell=True)
-
-def load_unsafe_pickle(data):
-    return pickle.loads(data)
-
-PASSWORD = "admin123"
-API_KEY = "sk-1234567890abcdef"
-
-os.system("echo 'Starting Hello AppSec World application...'")
-
-DEBUG = True
-SECRET_FLAG = "flag{never_hardcode_secrets}"
-
-def main():
-    print("=" * 45)
-    print("Hello AppSec World — Dirty Code Edition")
-    print("=" * 45)
+def main(
+    name: str,  # Required argument - user's first name
+    lastname: str = typer.Option("", help="User's last name."),  # Optional last name
+    formal: bool = typer.Option(False, "--formal", "-f", help="Use formal greeting."),  # Flag for formal greeting style
+):
+    """
+    Greets the user, optionally using last name and formal style.
     
-    name = input("Enter your name: ")
-
-    try:
-        greeting = unsafe_greeting(name)
-        print(f"\n{greeting}")
-    except Exception as e:
-        print(f"Error: {e}")
-        print(f"\nHello appsec world from @{name}!")
+    Args:
+        name: User's first name (required parameter)
+        lastname: User's last name (optional, defaults to empty string)
+        formal: Flag for formal greeting (defaults to False)
     
-    print(f"\n[WARNING] Hardcoded credentials found: {PASSWORD}, {API_KEY}")
-    print(f"[DEBUG MODE] Secret flag: {SECRET_FLAG}")
+    Returns:
+        None: Function prints the greeting to console
+    """
+    # Check if formal greeting should be used
+    if formal:
+        # Print formal greeting with last name
+        print(f"Good day, {name} {lastname}!")
+    else:
+        # Print informal greeting with only first name
+        print(f"Hello, {name}!")
 
+# Program entry point
 if __name__ == "__main__":
-    main()
+    # Run the typer CLI with the main function
+    typer.run(main)
