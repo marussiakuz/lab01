@@ -1,30 +1,45 @@
+"""CLI greeting application using Typer."""
+
 import typer
+from typing import Optional
+
 
 def main(
-    name: str,  # Required argument
-    lastname: str = typer.Option("", help="User's last name."),  # Optional last name
-    formal: bool = typer.Option(False, "--formal", "-f", help="Use formal greeting."),  # Flag for formal greeting style
-):
+    name: str,
+    lastname: Optional[str] = typer.Option(
+        default="",
+        help="User's last name.",
+    ),
+    formal: bool = typer.Option(
+        default=False,
+        "--formal",
+        "-f",
+        help="Use formal greeting.",
+    ),
+) -> None:
     """
-    Greets the user, optionally using last name and formal style.
-    
+    Greet a user with optional last name and formal style.
+
     Args:
-        name: User's first name (required parameter)
-        lastname: User's last name (optional, defaults to empty string)
-        formal: Flag for formal greeting (defaults to False)
-    
+        name: User's first name (required positional argument).
+        lastname: User's last name (optional, defaults to empty string).
+        formal: Flag to enable formal greeting style (defaults to False).
+
     Returns:
-        None: Function prints the greeting to console
+        None: This function prints the greeting to stdout.
+
+    Examples:
+        >>> main("John")
+        Hello, John!
+
+        >>> main("John", lastname="Doe", formal=True)
+        Good day, John Doe!
     """
-    # Check if formal greeting should be used
     if formal:
-        # Print formal greeting with last name
         print(f"Good day, {name} {lastname}!")
     else:
-        # Print informal greeting with only first name
         print(f"Hello, {name}!")
 
-# Program entry point
+
 if __name__ == "__main__":
-    # Run the typer CLI with the main function
     typer.run(main)
